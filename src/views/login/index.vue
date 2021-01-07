@@ -86,7 +86,7 @@
               />
             </el-form-item>
             <div class="login-code" style="cursor:pointer; width: 30%;height: 48px;float: right;background-color: #f0f1f5;">
-              <img style="height: 48px;width: 100%;border: 1px solid rgba(0,0,0, 0.1);border-radius:5px;" :src="codeUrl" @click="getCode">
+              <img style="height: 48px;width: 100%;border: 1px solid rgba(0,0,0, 0.1);border-radius:5px;" :src="codeUrl">
             </div>
 
             <el-button :loading="loading" type="primary" style="width:100%;padding:12px 20px;margin-bottom:30px;" @click.native.prevent="handleLogin">
@@ -114,19 +114,26 @@
 import { getCodeImg } from '@/api/login'
 import moment from 'moment'
 import SocialSign from './components/SocialSignin'
-
+import codeImg from '@/assets/icons/loginCode.png'
 export default {
   name: 'Login',
   components: { SocialSign },
   data() {
+    var checkLoginCode = (rule, value, callback) => {
+      if(value !== 'c3hz4'){
+        return callback(new Error('验证码错误'));
+      } else {
+        return callback()
+      }
+    }
     return {
-      codeUrl: '',
+      codeUrl: codeImg,
       cookiePassword: '',
       loginForm: {
         username: 'admin',
         password: '123456',
         // rememberMe: false,
-        // code: '123',
+        code: '',
         // uuid: ''
       },
       loginRules: {
@@ -136,7 +143,10 @@ export default {
         password: [
           { required: true, trigger: 'blur', message: '密码不能为空' }
         ],
-        // code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
+        code: [
+          { required: true, trigger: 'change', message: '验证码不能为空' },
+          { validator: checkLoginCode, trigger: 'blur'}
+        ]
       },
       passwordType: 'password',
       capsTooltip: false,
@@ -227,8 +237,8 @@ export default {
             password: this.loginForm.password,
             username: this.loginForm.username
           }).then(() => {
-            this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-            // this.$router.push({ path: '/' })
+            // this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+            this.$router.push({ path: '/' })
             this.loading = false
           })
           .catch(() => {

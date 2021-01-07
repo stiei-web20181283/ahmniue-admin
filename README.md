@@ -9,7 +9,7 @@
 #### 体验地址
 |官网文档地址:|     |      |
 |---  |--- | --- |
-|项目在线演示地址:|  [ahmniue](https://www.lexcubia.com)  |     |
+|项目在线演示地址:|  [ahmniue-admin](https://www.lexcubia.com)  |     |
 
 #### 项目源码
 
@@ -36,10 +36,10 @@ vue-element-admin | 项目脚手架参考 | [https://github.com/PanJiaChen/vue-e
 - 退出
 
 - 首页
-- 用户管理
-- 商品管理
-- 订单管理
-- 内容管理
+- 用户管理(敬请期待)
+- 商品管理(敬请期待)
+- 订单管理(敬请期待)
+- 内容管理(敬请期待)
 - 权限管理
    - 账号管理
    - 菜单管理
