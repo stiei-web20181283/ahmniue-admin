@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询菜单列表
-export function listMenu(query) {
+export function listMenu(parentId, params) {
   return request({
-    url: '/api/v1/menulist',
+    url: '/menu/list/' + parentId,
     method: 'get',
-    params: query
+    params: params
   })
 }
 
@@ -18,7 +18,7 @@ export function getMenu(id) {
 }
 
 // 查询菜单下拉树结构
-export function treeselect() {
+export function treeSelectMenu() {
   return request({
     url: '/menu/treeList',
     method: 'get'
@@ -44,9 +44,9 @@ export function updateMenu(id, data) {
 }
 
 // 删除菜单
-export function delMenu(menuId) {
+export function delMenu(id) {
   return request({
-    url: '/api/v1/menu/' + menuId,
-    method: 'delete'
+    url: '/menu/delete/' + id,
+    method: 'post'
   })
 }

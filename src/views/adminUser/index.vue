@@ -94,13 +94,14 @@
                 label="操作"
                 align="center"
                 width="200"
+                fixed="right"
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
-                  <el-button
-                    size="mini"
+                  <el-button 
+                    size="mini" 
                     type="text"
-                    icon="el-icon-user"
+                    icon="el-icon-user" 
                     @click="openRoleDialog(scope.row.id)"
                   >分配角色</el-button>
                   <el-button
@@ -123,8 +124,9 @@
             <pagination
               v-show="total>0"
               :total="total"
-              :page.sync="queryParams.pageIndex"
+              :page.sync="queryParams.pageNum"
               :limit.sync="queryParams.pageSize"
+              :page-sizes="[5, 10, 15, 20, 25, 30]"
               @pagination="getList"
             />
           </el-col>
@@ -254,8 +256,8 @@ export default {
       },
       // 查询参数
       queryParams: {
-        pageIndex: 1,
-        pageSize: 10,
+        pageNum: 1,
+        pageSize: 5,
         keyword: undefined,
         status: undefined,
       },

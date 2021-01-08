@@ -73,7 +73,7 @@
           <el-table-column label="角色名称" align="center" prop="name" :show-overflow-tooltip="true" width="150" />
           <el-table-column label="角色描述" align="center" prop="description" :show-overflow-tooltip="true" width="150" />
           <el-table-column label="用户数量" align="center" prop="adminCount" :show-overflow-tooltip="true" width="80" />
-          <el-table-column label="显示顺序" align="center" prop="sort" width="80" />
+          <!-- <el-table-column label="显示顺序" align="center" prop="sort" width="80" /> -->
           <el-table-column label="状态" align="center" width="80">
             <template slot-scope="scope">
               <el-switch
@@ -89,26 +89,24 @@
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <el-table-column label="操作" align="center" fixed="right" class-name="small-padding fixed-width">
             <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="text"
-                icon="el-icon-circle-check"
+                icon="el-icon-s-operation"
                 @click="handleMenuChange(scope.row)"
               >分配菜单</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-edit"
-                @click="handleUpdate(scope.row)"
-              >修改</el-button>
+                @click="handleUpdate(scope.row)">修改</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
-                @click="handleDelete(scope.row)"
-              >删除</el-button>
+                @click="handleDelete(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -118,6 +116,7 @@
           :total="total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
+          :page-sizes="[5, 10, 15, 20, 25, 30]"
           @pagination="getList"
         />
 
@@ -154,24 +153,6 @@
 
         <!-- 分配角色数据权限对话框 -->
         <el-dialog :title="title" :visible.sync="openMenuChange" width="500px">
-          <!-- <el-form :model="form" label-width="80px">
-            <el-form-item label="角色名称">
-              <el-input v-model="form.roleName" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="权限字符">
-              <el-input v-model="form.roleKey" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="权限范围">
-              <el-select v-model="form.dataScope">
-                <el-option
-                  v-for="item in dataScopeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </el-form-item>
-          </el-form> -->
               <el-tree
                 ref="menu"
                 :data="menuOptions"
@@ -192,7 +173,7 @@
 
 <script>
 import { listRole, getRole, delRole, addRole, updateRole, changeRoleStatus, allocMenu, listMenuByRole} from '@/api/system/role'
-import { treeselect as menuTreeselect } from '@/api/system/menu'
+import { treeSelectMenu as menuTreeselect } from '@/api/system/menu'
 export default {
   name: 'AdminRole',
   components: {
@@ -232,7 +213,7 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 5,
         keyword: undefined,
         status: undefined
       },
@@ -278,10 +259,16 @@ export default {
           if(menuList!=null&&menuList.length>0){
             for(let i=0;i<menuList.length;i++){
               let menu = menuList[i];
-              // if(menu.parentId!==0){
+              // if(menu.parentId !== 0 && !menu.children){
                 checkedMenuIds.push(menu.id);
+              // } 
+              // else if (menu.parentId !== 0){
+              //   // if(menu.children && menu.children.lenght == 1){
+              //     checkedMenuIds.push(menu.id);
+              //   // }
               // }
             }
+            console.log(checkedMenuIds)
           }
           this.$refs.menu.setCheckedKeys(checkedMenuIds);
       })
@@ -427,7 +414,7 @@ export default {
               type: 'success',
               duration: 1000
             });
-            // this.openMenuChange = false
+            this.openMenuChange = false
             this.roleId = null
           })
         })

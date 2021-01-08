@@ -130,7 +130,7 @@ export default {
       codeUrl: codeImg,
       cookiePassword: '',
       loginForm: {
-        username: 'admin',
+        username: 'custom',
         password: '123456',
         // rememberMe: false,
         code: '',

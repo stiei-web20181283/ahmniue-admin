@@ -50,7 +50,9 @@ export function generaMenu(routes, data) {
     if (item.children) {
       generaMenu(menu.children, item.children)
     }
-    routes.push(menu)
+    if(item.hidden == 0){
+      routes.push(menu)
+    }
   })
 }
 
