@@ -181,17 +181,18 @@
       </el-dialog>
       <!-- 角色分配 -->
       <el-dialog title="角色分配" :visible.sync="roleDialog" width="300px">
-        <el-row>
-          <el-select v-model="roleIds" multiple placeholder="请选择" @change="$forceUpdate()">
-            <el-option
-              v-for="item in roleOptions"
-              :key="item.id"
-              :label="item.description"
-              :value="item.id"
-              :disabled="form.status == 0"
-            />
-          </el-select>
-        </el-row>
+            <el-select v-model="roleIds" multiple collapse-tags placeholder="请选择" @change="$forceUpdate()">
+              <el-option
+                v-for="item in roleOptions"
+                :key="item.id"
+                :label="item.description"
+                :value="item.id"
+                :disabled="item.status == 0"
+              >
+                <!-- <span style="float: left">{{ item.description }}</span>
+                <span style="float: right;margin-right:20px; color: #8492a6; font-size: 13px">{{ item.name }}</span> -->
+              </el-option>
+            </el-select>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="updateRole()">确 定</el-button>
           <el-button @click="roleDialog=false">取 消</el-button>
@@ -329,7 +330,10 @@ export default {
     /** 查询所有角色 */
     getRoleList() {
       this.loading = true
-      listRole().then(response => {
+      let params = {
+        pageSize: 100
+      }
+      listRole(params).then(response => {
           this.roleOptions = response.data.list
           this.loading = false
         }

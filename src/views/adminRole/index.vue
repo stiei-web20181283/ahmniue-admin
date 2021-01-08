@@ -259,9 +259,9 @@ export default {
           if(menuList!=null&&menuList.length>0){
             for(let i=0;i<menuList.length;i++){
               let menu = menuList[i];
-              // if(menu.parentId !== 0 && !menu.children){
+              if(menu.hasChildren == 0){
                 checkedMenuIds.push(menu.id);
-              // } 
+              } 
               // else if (menu.parentId !== 0){
               //   // if(menu.children && menu.children.lenght == 1){
               //     checkedMenuIds.push(menu.id);

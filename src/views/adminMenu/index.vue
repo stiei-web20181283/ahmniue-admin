@@ -43,7 +43,7 @@
           :data="menuList"
           row-key="id"
           border
-          :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+          :tree-props="{children: 'children', hasChildren: ''}"
         >
           <el-table-column prop="title" label="菜单名称" align="center" :show-overflow-tooltip="true" width="150px" />
           <el-table-column prop="icon" label="图标" align="center" width="50">
