@@ -203,7 +203,7 @@
 </template>
 
 <script>
-import { listUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus, getUserRole, updateUserRole } from '@/api/system/sysuser'
+import { listUser, delUser, addUser, getUser, updateUser, resetUserPwd, changeUserStatus, getUserRole, updateUserRole } from '@/api/system/sysuser'
 import { listRole } from '@/api/system/role'
 import { getToken } from '@/utils/auth'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -431,7 +431,14 @@ export default {
       this.reset()
       this.open = true
       this.title = '修改用户'
-      this.form = row
+      getUser(row.id).then(response=>{
+        if (response.code === 200) {
+          this.msgSuccess('查询成功')
+          this.form = response.data
+        } else {
+          this.msgError(response.message)
+        }
+      })
     },
     /** 重置密码按钮操作 */
     handleResetPwd(row) {
@@ -443,7 +450,7 @@ export default {
           if (response.code === 200) {
             this.msgSuccess('修改成功，新密码是：' + value)
           } else {
-            this.msgError(response.msg)
+            this.msgError(response.message)
           }
         })
       }).catch(() => {})
@@ -459,7 +466,7 @@ export default {
                 this.open = false
                 this.getList()
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.message)
               }
             })
           } else {
@@ -469,7 +476,7 @@ export default {
                 this.open = false
                 this.getList()
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.message)
               }
             })
           }

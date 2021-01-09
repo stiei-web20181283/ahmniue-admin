@@ -370,7 +370,7 @@ export default {
                 this.open = false
                 this.getList()
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.message)
               }
             })
           } else {
@@ -380,7 +380,7 @@ export default {
                 this.open = false
                 this.getList()
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.message)
               }
             })
           }

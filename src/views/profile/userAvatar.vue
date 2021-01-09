@@ -134,7 +134,7 @@ export default {
             }
             this.msgSuccess('修改成功')
           } else {
-            this.msgError(response.msg)
+            this.msgError(response.message)
           }
           this.$refs.cropper.clearCrop()
         })
