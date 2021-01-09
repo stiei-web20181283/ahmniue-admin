@@ -16,6 +16,13 @@ export function getUser(userId) {
     method: 'get'
   })
 }
+//查询当前登录用户
+export function getProfile() {
+  return request({
+    url: '/admin/profile',
+    method: 'get'
+  })
+}
 // 查询用户角色列表
 export function getUserRole(userId) {
   return request({
@@ -78,25 +85,20 @@ export function changeUserStatus(id, params) {
     params: params
   })
 }
-
-
-// 用户密码重置
-export function updateUserPwd(oldPassword, newPassword) {
-  const data = {
-    oldPassword,
-    newPassword
-  }
+// 用户头像修改
+export function changeUserAvatar(id, data) {
   return request({
-    url: '/admin/updatePassword',
+    url: '/admin/updateAvatar/' + id,
     method: 'post',
     data: data
   })
 }
 
-// 用户头像上传
-export function uploadAvatar(data) {
+
+// 用户密码重置
+export function updateUserPwd(data) {
   return request({
-    url: '/api/v1/user/avatar',
+    url: '/admin/updatePassword',
     method: 'post',
     data: data
   })

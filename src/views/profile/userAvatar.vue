@@ -8,6 +8,7 @@
             ref="cropper"
             :img="options.img"
             :info="true"
+            :outputType="options.outputType"
             :auto-crop="options.autoCrop"
             :auto-crop-width="options.autoCropWidth"
             :auto-crop-height="options.autoCropHeight"
@@ -54,7 +55,7 @@
 <script>
 import store from '@/store'
 import { VueCropper } from 'vue-cropper'
-import { uploadAvatar } from '@/api/system/sysuser'
+import { changeUserAvatar } from '@/api/system/sysuser'
 
 export default {
   components: { VueCropper },
@@ -70,12 +71,15 @@ export default {
       title: '修改头像',
       options: {
         img: store.getters.avatar, // 裁剪图片的地址
+        outputType: 'png', // 输出格式
         autoCrop: true, // 是否默认生成截图框
         autoCropWidth: 200, // 默认生成截图框宽度
         autoCropHeight: 200, // 默认生成截图框高度
         fixedBox: true // 固定截图框大小 不允许改变
       },
-      previews: {}
+      previews: {},
+      fileName: undefined,
+      fileType: undefined
     }
   },
   methods: {
@@ -101,6 +105,8 @@ export default {
     },
     // 上传预处理
     beforeUpload(file) {
+      this.fileName = file.name
+      this.fileType = file.type
       if (file.type.indexOf('image/') === -1) {
         this.msgError('文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。')
       } else {
@@ -114,12 +120,18 @@ export default {
     // 上传图片
     uploadImg() {
       this.$refs.cropper.getCropBlob(data => {
+        let files = new window.File([data], this.fileName, {type: this.fileType})
+        // debugger
         const formData = new FormData()
-        formData.append('upload[]', data)
-        uploadAvatar(formData).then(response => {
+        formData.append('file', files)
+        changeUserAvatar(this.user.id,formData).then(response => {
           if (response.code === 200) {
             this.open = false
-            this.options.img = process.env.VUE_APP_BASE_API + response.data
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = () => {
+              this.options.img = response.data.path
+            }
             this.msgSuccess('修改成功')
           } else {
             this.msgError(response.msg)

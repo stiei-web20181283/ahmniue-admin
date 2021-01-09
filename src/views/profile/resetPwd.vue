@@ -20,6 +20,10 @@
 import { updateUserPwd } from '@/api/system/sysuser'
 
 export default {
+  props: {
+    // eslint-disable-next-line vue/require-default-prop
+    userInfo: { type: Object }
+  },
   data() {
     const equalToPassword = (rule, value, callback) => {
       if (this.user.newPassword !== value) {
@@ -31,6 +35,7 @@ export default {
     return {
       test: '1test',
       user: {
+        username: undefined,
         oldPassword: undefined,
         newPassword: undefined,
         confirmPassword: undefined
@@ -55,7 +60,12 @@ export default {
     submit() {
       this.$refs['form'].validate(valid => {
         if (valid) {
-          updateUserPwd(this.user.oldPassword, this.user.newPassword).then(
+          let params = {
+            username: this.userInfo.username,
+            oldPassword: this.user.oldPassword,
+            newPassword: this.user.newPassword
+          }
+          updateUserPwd(params).then(
             response => {
               if (response.code === 200) {
                 this.msgSuccess('修改成功')
